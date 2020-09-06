@@ -24,29 +24,30 @@ class Home extends Component {
       return "";
     }
 
-    const colSize = 12 / this.state.images.paths.length;
+    const { paths } = this.state.images;
+    const colSize = 12 / paths.length;
 
     return (
       <div className="h-100 mt-5" style={{ position: "fixed" }}>
         <MDBRow className="mt-5">
           <MDBCol lg="12 mt-5">
             <center>
-              <h1 className="title animated bounceInDown slow">
+              <h1 className="title animated bounceInDown">
                 Album cover generator.
               </h1>
-              <p className="subtitle mt-4 animated fadeIn slower delay-1s">
+              <p className="subtitle mt-4 animated fadeIn slower">
                 Select a catagory below to begin.
               </p>
             </center>
           </MDBCol>
         </MDBRow>
         <MDBRow className="mt-5">
-          {this.state.images.paths.map((data) => (
-            <MDBCol lg={colSize} key={data}>
+          {paths.map((data, index) => (
+            <MDBCol lg={colSize.toString()} key={data}>
               <center>
                 <AlbumSelection
                   pathTo={this.pictureAt(data)}
-                  settings="animated bounceInDown slower delay-2s"
+                  settings={"animated zoomIn delay-1s"}
                 ></AlbumSelection>
               </center>
             </MDBCol>
