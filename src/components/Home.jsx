@@ -9,6 +9,22 @@ class Home extends Component {
     return `assets/${name}`;
   };
 
+  setFocusOn = (data) => {
+    this.setState({ images: this.state.images, focus: data });
+  };
+
+  getStyle = (data, focus) => {
+    const scaleValue =
+      focus === null || focus !== data ? "scale(1.0)" : "scale(1.1)";
+
+    const style = {
+      position: "relative",
+      transform: scaleValue,
+    };
+
+    return style;
+  };
+
   componentDidMount() {
     this.loadImages();
   }
@@ -24,15 +40,16 @@ class Home extends Component {
       return "";
     }
 
+    const { focus } = this.state;
     const { paths } = this.state.images;
     const colSize = 12 / paths.length;
 
     return (
-      <div className="h-100 mt-5" style={{ position: "fixed" }}>
+      <div style={{ position: "relative", zIndex: 1 }}>
         <MDBRow className="mt-5">
           <MDBCol lg="12 mt-5">
             <center>
-              <h1 className="title animated bounceInDown">
+              <h1 className="mt-1 title animated bounceInDown">
                 Album cover generator.
               </h1>
               <p className="subtitle mt-4 animated fadeIn slower">
@@ -44,12 +61,18 @@ class Home extends Component {
         <MDBRow className="mt-5">
           {paths.map((data, index) => (
             <MDBCol lg={colSize.toString()} key={data}>
-              <center>
-                <AlbumSelection
-                  pathTo={this.pictureAt(data)}
-                  settings={"animated zoomIn delay-1s"}
-                ></AlbumSelection>
-              </center>
+              <div
+                onMouseEnter={(e) => this.setFocusOn(data)}
+                onMouseLeave={(e) => this.setFocusOn(null)}
+                style={this.getStyle(data, focus)}
+              >
+                <center>
+                  <AlbumSelection
+                    pathTo={this.pictureAt(data)}
+                    settings={"animated zoomIn delay-1s"}
+                  ></AlbumSelection>
+                </center>
+              </div>
             </MDBCol>
           ))}
         </MDBRow>
